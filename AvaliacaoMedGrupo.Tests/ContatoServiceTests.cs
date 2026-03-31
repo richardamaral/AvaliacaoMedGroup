@@ -95,6 +95,23 @@ public class ContatoServiceTests
         Assert.Equal("A idade nao pode ser igual a 0.", excecao.Message);
     }
 
+    [Theory]
+    [InlineData(1)]
+    [InlineData(10)]
+    [InlineData(17)]
+    public async Task CriarAsync_ComIdadeMenorQueMinima_DeveLancarExcecao(int idade)
+    {
+        var request = new CriarContatoRequest
+        {
+            Nome = "Contato Menor",
+            DataNascimento = DateTime.Today.AddYears(-idade),
+            Sexo = Sexo.Masculino
+        };
+
+        var excecao = await Assert.ThrowsAsync<ArgumentException>(() => _service.CriarAsync(request));
+        Assert.Equal("O contato deve ter no minimo 18 anos para ser cadastrado.", excecao.Message);
+    }
+
     [Fact]
     public async Task ObterTodosAtivosAsync_DeveRetornarApenasContatosAtivos()
     {

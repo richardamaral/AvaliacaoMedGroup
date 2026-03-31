@@ -112,6 +112,10 @@ public class ContatoService : IContatoService
         if (idade == IdadeInvalida)
             throw new ArgumentException("A idade nao pode ser igual a 0.");
 
+        // valida se o contato tem a idade minima exigida pela regra de negocio
+        if (idade < IdadeMinima)
+            throw new ArgumentException($"O contato deve ter no minimo {IdadeMinima} anos para ser cadastrado.");
+
     }
 
     // calcula a idade baseado na data de nascimento
